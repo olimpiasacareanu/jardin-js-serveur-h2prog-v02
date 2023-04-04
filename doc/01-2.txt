@@ -1,0 +1,12 @@
+vvvwv
+
+Etape 1 : Récupérer le module express
+Etape 2 : créer le serveur express
+Etape 3 : indiquer sur quel PORT le serveur écout
+
+Etape 4 : créer une fonction permettant de traite:
+la demande cliente reçue
+
+Etape 5 : Lancer le serveur
+
+Etape 6 : Tester en lançant l’URL : localhost:3000

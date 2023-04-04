@@ -1,0 +1,73 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}{{plante.nom}}{% endblock %}
+{% block contenu %}
+    {% if isModification %}
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <form action="/plantes/updateImage" enctype="multipart/form-data" method="POST">
+                    <img width="160px" src="/img/{{plante.img}}" alt="{{plante.nom}}">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control-file my-2" id="image" name="image">
+                    </div>
+                    <input type="hidden" name="identifiant" value="{{plante.id}}">
+                    <input type="submit" class="btn btn-info mt-2" value="Valider">
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <form method="post" action="/plantes/updateServer">
+                    <div class="m-2 plante ">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input type="text" class="form-control" id="nom" placeholder="Entrer le nom" name="nom" value="{{plante.nom}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nomLatin">Nom Latin</label>
+                            <input type="text" class="form-control" id="nomLatin" placeholder="Entrer le nom en latin" name="nomLatin" value="{{plante.nomLatin}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="famille">Famille</label>
+                            <select class="form-select" name="famille" id="famille">
+                            {% for famille in familles %}
+                                <option value="{{famille.id}}">{{famille.nom}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-select" id="categorie" name="categorie">
+                            {% for categorie in categories %}
+                                <option value="{{categorie.id}}"
+                                    {% if categorie.id == plante.categorie._id %}
+                                        selected
+                                    {% endif %}
+                                >{{categorie.nom}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea rows="3" class="form-control" id="description" placeholder="Entrer la description" name="description" >{{plante.description}}</textarea>
+                        </div>
+                        <input type="hidden" name="identifiant" value="{{plante.id}}">
+                        <input type="submit" class="btn btn-info text-center my-3" value="Valider">
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center plante">
+            <div class="col-lg-4 mb-5">
+                <img width="100%" src="/img/{{plante.img}}" alt="{{plante.nom}}">
+            </div>
+            <div class="col-lg-6">
+                <p><i class="fa-solid fa-leaf" style="color : #6188ff;"></i><a class="mx-2" href="/categories/{{plante.categorie.id}}">{{plante.categorie.nom}}</a></p>
+                <p><i>Famille : <a href="/familles/{{plante.famille._id}}">{{plante.famille.nom}}</a></i></p>
+                <p><i class="p__accent">{{plante.nomLatin}}</i></p>
+                <p>{{plante.description}}</p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

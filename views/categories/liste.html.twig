@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}Catégories des plantes{% endblock %}
+{% block contenu %}
+  {% if message|length > 0 %}
+      <div class="alert {{message.type}}" role="alert">
+        {{message.contenu}}
+      </div>
+  {% endif %}
+    <table class="table table-hover">
+      <thead>
+        <tr >
+          <th scope="col">Image</th>
+          <th scope="col">Categorie</th>
+          <th scope="col">Nombre de plantes</th>
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for categorie in categories %}
+            <tr class="table-light">
+                <th class="align-middle"  scope="row"><img width="60px" src="/img/{{categorie.img}}" alt="{{categorie.nom}}"></th>                      
+                <th class="align-middle"><a href="categories/{{categorie.id}}">{{categorie.nom}}</a></th>
+                <td class="align-middle" >{{categorie.plantes|length}}</td>
+                <td class="align-middle"><a href="/categories/update/{{categorie.id}}" class=""><i class="fa-solid fa-pen-to-square"></i></a></td>
+                <td class="align-middle">
+                    <form method="POST" action="/categories/delete/{{categorie._id}}" {% if categorie.nom == "anonyme"  %} onSubmit="return alert('La catégorie anonyme ne peut pas être supprimer. ' )" {% else %} onSubmit="return confirm('Voulez-vous vraiment supprimer la catégorie ? ' )" {% endif %}>
+                        <button class="bg-transparent border-0" type="submit"><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button class="btn btn-info mb-5" onClick="afficherForm()">Ajouter une catégorie</button>
+    <div class="ajoutCategorie">
+      <form action="" method="POST" class="d-none mt-4" id="formAjout" enctype="multipart/form-data">
+        <fieldset>
+        <legend>Ajout d'une catégorie</legend>
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" placeholder="Entrer le nom" name="nom">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" placeholder="Entrer la description" name="description">
+        </div>
+        <div class="form-group my-3">
+          <label for="image">Image</label>
+          <input  type="file" class="form-control-file" id="image" name="image">
+        </div>
+        <button type="submit" class="btn btn-info mt-2 mb-5" type="submit">Ajouter</button>
+      </fieldset>
+      </form>
+    </div>
+
+    <script src="/js/ajoutForm.js"></script>
+{% endblock %}

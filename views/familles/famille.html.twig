@@ -1,0 +1,78 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}{{famille.nom}}{% endblock %}
+{% block contenu %}
+    {% if isModification %}
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="updateImage">
+                    <img width="250px" src="/img/{{famille.img}}" alt="{{famille.nom}}">
+                    <form action="/familles/updateImage" method="post" enctype="multipart/form-data">
+                        <fieldset>
+                            <legend>Modification de l'image</legend>
+                            <div class="form-group my-2">
+                                <label for="image">Image</label>
+                                <input type="file" name="image" class="form-control-file">
+                            </div>
+                            <input type="hidden" name="identifiant" value="{{famille._id}}">
+                            <input type="submit" class="btn btn-info mt-2" value="Valider">
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="updateFamille mt-5">
+                    <form id="formAjout" action="/familles/updateServer" method="post" >
+                        <fieldset>
+                            <legend>Modification de la famille de plante</legend>
+                            <div class="form-group">
+                                <label for="nom">Nom </label>
+                                <input type="text" class="form-control" id="nom" placeholder="Entrer le nom" name="nom" value="{{famille.nom}}" {% if famille.nom == "anonyme" %} disabled {% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="nomLatin">Nom latin</label>
+                                <input type="text" class="form-control" id="nomLatin" placeholder="Entrer le nom en latin" name="nomLatin" value="{{famille.nomLatin}}" {% if famille.nom == "anonyme" %} disabled {% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea name="description" class="form-control" id="description" rows="5" placeholder="Entrer la description" {% if famille.nom == "anonyme" %} disabled {% endif %}>{{famille.description}}</textarea>
+                            </div>
+                            <input type="hidden" id="identifiant" name="identifiant" value="{{famille._id}}">
+                            <button type="submit" class="btn btn-info mt-2" value="Modifier" {% if famille.nom == "anonyme" %} disabled {% endif %}>Modifier</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <img width="100%" src="/img/{{famille.img}}" alt="{{famille.nom}}">
+            </div>
+            <div class="col-lg-6">
+                <h5>Description : </h5>
+                <p><i>{{famille.nomLatin}}</i></p>
+                <p>{{famille.description}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="{% if famille.nom == "anonyme" %} d-none {% endif %}">
+            <h4 class="py-4 mb-3 bg-light text-center">Les plantes associées à la même famille : </h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for plante in famille.plantes %}
+                    <tr>
+                        <th class="text-center"><img width="60px" src="/img/{{plante.img}}" alt="{{plante.nom}}"></th>
+                        <th class="align-middle"><a href="/plantes/{{plante._id}}">{{plante.nom}}</a></th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

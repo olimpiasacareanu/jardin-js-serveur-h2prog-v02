@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}Catégorie : {{categorie.nom}}{% endblock %}
+{% block contenu %}
+    {% if isModification %}
+        <h4> Description : </h4>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="updateImage">
+                    <img width="160px" src="/img/{{categorie.img}}" alt="{{categorie.nom}}">
+                    <form action="/categories/updateImg" method="post" enctype="multipart/form-data">
+                        <fieldset>
+                            <legend>Modification de l'image</legend>
+                            <div class="form-group my-2">
+                                <label for="image">Image</label>
+                                <input type="file" class="form-control-file my-2" id="image" name="image">
+                            </div>
+                            <input type="hidden" name="identifiant" class="btn btn-info mt-3" value="{{categorie.id}}">
+                            <input type="submit" class="btn btn-info mt-3" value="valider">
+                        </fieldset>
+                    </form>
+                </div>
+                <form action="/categories/updateDB" method="post">
+                    <input type="text" name="nom" class="form-control" id="nom" {% if categorie.nom == "anonyme" %} disabled  {% endif %} value="{{categorie.nom}}" placeholder="Entrer le nom">
+                    <textarea name="description" class="form-control" id="description" rows="5" placeholder="Entrer la description" >{{categorie.description}}</textarea>
+                    <input type="hidden" name="identifiant" class="btn btn-info mt-3" value={{categorie.id}}>
+                    <input type="submit" class="btn btn-info mt-3" value="valider">
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <img width="100%" src="/img/{{categorie.img}}" alt="{{categorie.nom}}">
+            </div>
+            <div class="col-lg-6">
+                <h5>Description : </h5>
+                <p>{{categorie.description}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="{% if categorie.nom == "anonyme" %} d-none {% endif %}">
+            <h4 class="py-4 mb-3 text-center bg-light" >Plantes de la même catégorie : </h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for plante in categorie.plantes %}
+                    <tr>
+                        <th class="text-center"><img width="60px" src="/img/{{plante.img}}" alt="{{plante.nom}}"></th>
+                        <th class="align-middle "><a href="/plantes/{{plante.id}}">{{plante.nom}}</a></th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

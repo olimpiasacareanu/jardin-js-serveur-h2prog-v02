@@ -1,0 +1,77 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}Ma liste des plantes{% endblock %}
+{% block contenu %}
+{% if message|length>0 %}
+  <div class="alert alert-{{message.type}}" role="alert">
+    {{message.contenu}}
+  </div>
+{% endif %}
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Famille</th>
+          <th scope="col">Categorie</th>
+          {# <th scope="col">Description</th> #}
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for plante in liste %}
+          <tr class="table-light">
+            <th scope="row"><img width="60px" src="/img/{{plante.img}}" alt="{{plante.nom}}"> </th>
+            <th class="align-middle" scope="row"><a class="text-info" href="/plantes/{{plante.id}}">{{plante.nom}}</a></th>
+            <td class="align-middle"><a href="/familles/{{plante.famille._id}}">{{ plante.famille.nom}}</a></td>
+            <td class="align-middle"><a class="text-info" href="/categories/{{plante.categorie._id}}">{{plante.categorie.nom}}</a></td>
+            {# <td class="align-middle">{{ plante.description}}</td> #}
+            <td class="align-middle"><a href="/plantes/update/{{plante.id}}" class=""><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td class="align-middle">
+              <form method="POST" action="/plantes/delete/{{plante.id}}" onSubmit="return confirm('Voulez-vous vraiment supprimer la plante ?' )">
+                <button class="border-0 bg-transparent" type="submit"><i class="fa-solid fa-trash"></i></button>
+              </form>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button class="btn btn-info mb-5" onClick="afficherForm()">Ajouter une plante</button>
+    <form action="" method="POST" id="formAjout" class="mt-4 d-none" enctype="multipart/form-data">
+      <fieldset>
+        <legend>Ajout d'une plante</legend>
+        <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" placeholder="Entrer le nom" name="nom">
+        </div>
+        <div class="form-group">
+            <label for="famille">Famille</label>
+            <select class="form-select" name="famille" id="famille">
+            {% for famille in familles %}
+              <option value="{{famille.id}}">{{famille.nom}}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="categorie">Catégorie</label>
+            <select class="form-select" id="categorie" name="categorie">
+              {% for categorie in categories %}
+                <option value="{{categorie.id}}">{{categorie.nom}}</option>
+              {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea rows="3" class="form-control" id="description" placeholder="Entrer la description" name="description"></textarea>
+        </div>
+        <div class="form-group my-3">
+          <label for="image">Image</label>
+          <input  type="file" class="form-control-file" id="image" name="image">
+        </div>
+        <button type="submit" class="btn btn-info my-2" type="submit">Ajouter</button>
+      </fieldset>
+    </form>
+    
+    <script src="/js/ajoutForm.js"></script>  
+{% endblock %}

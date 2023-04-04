@@ -1,0 +1,62 @@
+{% extends "base.html.twig" %}
+
+{% block img %}/img/accueil-img.jpeg{% endblock %}
+{% block titre %}Familles de plantes{% endblock %}
+{% block contenu %}
+    {% if message|length > 0 %}
+        <div class="alert {{message.type}}" role="alert">
+            {{message.contenu}}
+        </div>
+    {% endif %}
+    <table class="table table-hover">
+        <thead>
+                <tr>
+                <th scope="col">Img</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Nom latin</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for famille in liste %}
+            <tr>
+                <th class="align-middle"><img width="60px" src="/img/{{famille.img}}" alt="{{famille.nom}}"></th>
+                <th class="align-middle"><a href="familles/{{famille._id}}">{{famille.nom}}</a></th>
+                <td class="align-middle">{{famille.nomLatin}}</td>
+                <td class="align-middle"><a href="familles/update/{{famille._id}}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                <td class="align-middle">
+                    <form action="familles/delete/{{famille._id}}" method="post">
+                        <button class="border-0 bg-transparent" {% if famille.nom == "anonyme" %} onClick="return alert('La famille anonyme ne peut pas être supprimer.')" {% else %} onClick="return confirm('Voulez-vous vraiment supprimer la famille ?')" {% endif %}><i class="fa-solid fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button class="btn btn-info mb-5" onClick="afficherForm()">Ajouter une famille</button>
+    <div class="ajoutForm">
+        <form id="formAjout" class="d-none" action="" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Ajout d'une famille de plante</legend>
+                <div class="form-group">
+                    <label for="nom">Nom </label>
+                    <input type="text" class="form-control" id="nom" placeholder="Entrer le nom" name="nom">
+                </div>
+                <div class="form-group">
+                    <label for="nomLatin">Nom latin</label>
+                    <input type="text" class="form-control" id="nomLatin" placeholder="Entrer le nom en latin" name="nomLatin">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" class="form-control" id="description" rows="3" placeholder="Entrer la description"></textarea>
+                </div>
+                <div class="form-group my-2">
+                    <label for="image">Image</label>
+                    <input type="file" name="image" class="form-control-file" id="image" >
+                </div>
+                <button type="submit" class="btn btn-info mt-2" value="Ajouter">Ajouter</button>
+            </fieldset>
+        </form>
+    </div>
+    <script src="/js/ajoutForm.js"></script>
+{% endblock %}

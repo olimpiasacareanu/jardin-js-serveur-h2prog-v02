@@ -1,0 +1,22 @@
+Etape 1 : Récupérer le module express var express
+var server
+Etape 2 : créer le serveur express
+
+di server.listen(
+Etape 3 : indiquer sur quel PORT le serveur écoute
+
+v v vw
+
+server.u , function(){
+
+Etape 4 : créer une fonction permettant de traiter jéion(
+€ e.log
+
+la demande cliente reçue
+
+» Etape5 : Lancer le serveur
+
+>node serveur.js
+
+Etape 6 : Tester en lançant FURL : localhost:3000
+

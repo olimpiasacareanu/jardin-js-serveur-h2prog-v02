@@ -1,0 +1,24 @@
+:root{
+    --bs-info-bg:#2e417a;
+    --p-yellow: rgb(250, 86, 0);
+    --p-yellow: rgb(229,28,35);
+}
+
+*{
+    color: #051b5d;
+}
+
+h1, h2,h3,h4,h5,h6{
+    font-family: 'Tilt Warp', cursive;
+}
+
+.p__accent{
+    color: var(--p-yellow);
+}
+
+.accueil__img{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
